@@ -13,6 +13,8 @@ from ...settings import DATA_PATH
 from ..utils.losses import NLLLoss
 from ..utils.metrics import matcher_metrics
 
+from ......registry import MODEL_REGISTRY
+
 FLASH_AVAILABLE = hasattr(F, "scaled_dot_product_attention")
 
 torch.backends.cudnn.deterministic = True
@@ -303,7 +305,8 @@ def filter_matches(scores: torch.Tensor, th: float):
     return m0, m1, mscores0, mscores1
 
 
-class LightGlue(nn.Module):
+@MODEL_REGISTRY.register()
+class Gim_LightGlue(nn.Module):
     default_conf = {
         "name": "lightglue",  # just for interfacing
         "input_dim": 256,  # input descriptor dimension (autoselected from weights)
@@ -629,4 +632,4 @@ class LightGlue(nn.Module):
         return losses, metrics
 
 
-__main_model__ = LightGlue
+__main_model__ = Gim_LightGlue
